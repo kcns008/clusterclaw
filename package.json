@@ -1,12 +1,12 @@
 {
-  "name": "openclaw",
-  "version": "2026.1.30",
-  "description": "WhatsApp gateway CLI (Baileys web) with Pi RPC agent",
+  "name": "clusterclaw",
+  "version": "1.0.0",
+  "description": "Active Kubernetes SRE Agent - Spin up, manage, upgrade, and troubleshoot Kubernetes and OpenShift clusters",
   "keywords": [],
   "license": "MIT",
   "author": "",
   "bin": {
-    "openclaw": "openclaw.mjs"
+    "clusterclaw": "openclaw.mjs"
   },
   "files": [
     "dist/acp/**",
