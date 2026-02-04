@@ -5,9 +5,9 @@ read_when:
 title: "ClusterClaw"
 ---
 
-# ClusterClaw 🦞
+# ClusterClaw ☸️🔴
 
-> _"Pods are crashing? Let's fix that."_ — A space lobster SRE
+> _"Pods are crashing? Let's fix that."_ — An SRE agent
 
 <p align="center">
   <strong>Active Kubernetes SRE Agent — CLI-only cluster management</strong>

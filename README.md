@@ -1,11 +1,4 @@
-# 🦞 ClusterClaw — Active Kubernetes SRE Agent
-
-<p align="center">
-    <picture>
-        <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-logo-text-dark.png">
-        <img src="https://raw.githubusercontent.com/openclaw/openclaw/main/docs/assets/openclaw-logo-text.png" alt="ClusterClaw" width="500">
-    </picture>
-</p>
+# ☸️ ClusterClaw 🔴 — Active Kubernetes & OpenShift SRE Agent
 
 <p align="center">
   <strong>Your AI-Powered Kubernetes & OpenShift Operations Expert</strong>
