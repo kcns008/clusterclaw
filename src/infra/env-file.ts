@@ -13,7 +13,7 @@ export function upsertSharedEnvVar(params: {
   env?: NodeJS.ProcessEnv;
 }): { path: string; updated: boolean; created: boolean } {
   const env = params.env ?? process.env;
-  const dir = resolveConfigDir(env);
+  const dir = resolveConfigDir();
   const filepath = path.join(dir, ".env");
   const key = params.key.trim();
   const value = params.value;

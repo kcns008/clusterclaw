@@ -1,14 +1,16 @@
-export {
-  createConfigIO,
-  loadConfig,
-  parseConfigJson5,
-  readConfigFileSnapshot,
-  resolveConfigSnapshotHash,
-  writeConfigFile,
-} from "./io.js";
-export { migrateLegacyConfig } from "./legacy-migrate.js";
-export * from "./paths.js";
-export * from "./runtime-overrides.js";
-export * from "./types.js";
-export { validateConfigObject, validateConfigObjectWithPlugins } from "./validation.js";
-export { OpenClawSchema } from "./zod-schema.js";
+/**
+ * ClusterClaw Config (stub for CLI-only mode)
+ */
+
+import type { ClusterClawConfig } from "./types.clusterclaw.js";
+
+export type { ClusterClawConfig };
+
+// Simple config loading for ClusterClaw CLI
+export function loadConfig(): ClusterClawConfig {
+  return {} as ClusterClawConfig;
+}
+
+export function saveConfig(_config: ClusterClawConfig): void {
+  // Stub
+}

@@ -1,6 +1,34 @@
 # Changelog
 
-Docs: https://docs.openclaw.ai
+## 2026.2.3 — Major Transformation: ClusterClaw
+
+### Breaking Changes — OpenClaw → ClusterClaw Transformation
+
+This release marks a major transformation from OpenClaw (multi-platform messaging framework) to **ClusterClaw** (Kubernetes/OpenShift cluster management AI agent).
+
+**Removed:**
+- All messaging channels (Telegram, Discord, Slack, Signal, iMessage, WhatsApp, LINE)
+- All mobile apps (iOS, Android, macOS)
+- All non-Kubernetes skills (50+ skills removed)
+- Web UI and Control UI
+- Gateway daemon and pairing infrastructure
+- Browser automation, media pipeline, TUI
+
+**Retained:**
+- Core agent framework
+- Kubernetes skill (primary focus)
+- GitHub skill (GitOps workflows)
+- Coding Agent skill (manifest generation)
+
+**New Focus:**
+- CLI-only tool for Kubernetes/OpenShift operations
+- Active SRE agent for cluster management
+- Support for EKS, AKS, GKE, ARO, ROSA, and OpenShift
+
+**Migration:**
+- Config directory: `~/.openclaw/` → `~/.clusterclaw/`
+- Environment variables: `OPENCLAW_*` → `CLUSTERCLAW_*`
+- Binary: `openclaw` → `clusterclaw`
 
 ## 2026.1.31
 

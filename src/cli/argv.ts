@@ -72,7 +72,7 @@ export function getVerboseFlag(argv: string[], options?: { includeDebug?: boolea
 export function getPositiveIntFlagValue(argv: string[], name: string): number | null | undefined {
   const raw = getFlagValue(argv, name);
   if (raw === null || raw === undefined) {
-    return raw;
+    return undefined;
   }
   return parsePositiveInt(raw);
 }

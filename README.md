@@ -14,13 +14,12 @@
 <p align="center">
   <a href="https://github.com/kcns008/clusterclaw/actions/workflows/ci.yml?branch=main"><img src="https://img.shields.io/github/actions/workflow/status/kcns008/clusterclaw/ci.yml?branch=main&style=for-the-badge" alt="CI status"></a>
   <a href="https://github.com/kcns008/clusterclaw/releases"><img src="https://img.shields.io/github/v/release/kcns008/clusterclaw?include_prereleases&style=for-the-badge" alt="GitHub release"></a>
-  <a href="https://discord.gg/clawd"><img src="https://img.shields.io/discord/1456350064065904867?label=Discord&logo=discord&logoColor=white&color=5865F2&style=for-the-badge" alt="Discord"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge" alt="MIT License"></a>
 </p>
 
 **ClusterClaw** is an _Active Kubernetes SRE Agent_ — a specialized AI assistant for Kubernetes and OpenShift operations. It spins up clusters, manages workloads, performs upgrades, troubleshoots issues, and provides 24/7 operational support across all major cloud platforms.
 
-Built on top of the powerful Clawdbot/OpenClaw framework, ClusterClaw comes pre-loaded with comprehensive Kubernetes and OpenShift skills to handle your cluster operations automatically.
+ClusterClaw is a CLI-only tool focused purely on Kubernetes and OpenShift cluster management.
 
 ## 🚀 Key Capabilities
 
@@ -36,7 +35,7 @@ Built on top of the powerful Clawdbot/OpenClaw framework, ClusterClaw comes pre-
 
 ## 🛠️ Pre-Installed Skills
 
-ClusterClaw comes with the Kubernetes skill bundle pre-installed:
+ClusterClaw comes with Kubernetes-focused skills pre-installed:
 
 - **Cluster Operations**: Upgrades, backups, node management, scaling
 - **Troubleshooting**: Health checks, pod failures, network diagnostics
@@ -45,6 +44,7 @@ ClusterClaw comes with the Kubernetes skill bundle pre-installed:
 - **GitOps**: ArgoCD, Flux, Kustomize workflows
 - **OpenShift Specific**: SCCs, Routes, Operators, ImageStreams
 - **Multi-Cloud**: AKS, EKS, GKE, ARO, ROSA operations
+- **Coding Agent**: Generate Kubernetes manifests and configurations
 
 ## 📋 Quick Start
 
@@ -54,17 +54,8 @@ Runtime: **Node ≥22**.
 npm install -g clusterclaw@latest
 # or: pnpm add -g clusterclaw@latest
 
-clusterclaw onboard --install-daemon
+clusterclaw agent
 ```
-
-## 💬 Talk to ClusterClaw
-
-ClusterClaw answers you on the channels you use:
-
-- **Messaging**: WhatsApp, Telegram, Slack, Discord, Google Chat, Signal, iMessage
-- **Extension**: BlueBubbles, Matrix, Zalo, Zalo Personal
-- **Native**: macOS/iOS/Android voice input & output
-- **UI**: Live Canvas control and WebChat
 
 ### Example Conversations
 
@@ -77,8 +68,8 @@ ClusterClaw: Creating AKS cluster... Using best practices for production...
 **Troubleshoot pod failures:**
 ```
 You: Why is my payment-service pod crashing?
-ClusterClaw: Checking pod status... CrashLoopBackOff detected. 
-Analyzing logs... Error: Database connection timeout. 
+ClusterClaw: Checking pod status... CrashLoopBackOff detected.
+Analyzing logs... Error: Database connection timeout.
 Fix: Check DATABASE_HOST environment variable.
 ```
 
@@ -111,9 +102,9 @@ Updating to 1.31.0... Monitoring node pools...
 
 ## 📚 Documentation & Support
 
-- [Getting Started Guide](https://docs.openclaw.ai/start/getting-started)
 - [Kubernetes Skill Documentation](skills/kubernetes/SKILL.md)
-- [Discord Community](https://discord.gg/clawd)
+- [GitHub Skill Documentation](skills/github/SKILL.md)
+- [Coding Agent Documentation](skills/coding-agent/SKILL.md)
 - [Report Issues](https://github.com/kcns008/clusterclaw/issues)
 
 ## 🤝 Contributing
@@ -132,4 +123,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-Built with ❤️ by the ClusterClaw team, powered by [OpenClaw](https://github.com/openclaw/openclaw)
+Built with ❤️ by the ClusterClaw team, a Kubernetes-focused fork of [OpenClaw](https://github.com/openclaw/openclaw)

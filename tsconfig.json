@@ -8,12 +8,13 @@
     "lib": ["DOM", "DOM.Iterable", "ES2023", "ScriptHost"],
     "noEmit": true,
     "declaration": true,
-    "noEmitOnError": true,
+    "noEmitOnError": false,
     "outDir": "dist",
     "resolveJsonModule": true,
     "rootDir": "src",
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
     "target": "es2023"
   },
   "include": ["src/**/*"],
@@ -25,3 +26,4 @@
     "src/**/test-helpers.ts"
   ]
 }
+

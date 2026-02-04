@@ -1,52 +1,39 @@
-import { getLogger, isFileLogLevelEnabled } from "./logging/logger.js";
-import { theme } from "./terminal/theme.js";
+/**
+ * Global state (stub for ClusterClaw)
+ */
 
-let globalVerbose = false;
-let globalYes = false;
+import type { ClusterClawConfig } from "./config/config.js";
 
-export function setVerbose(v: boolean) {
-  globalVerbose = v;
+export let activeConfig: ClusterClawConfig = {} as ClusterClawConfig;
+
+export function setActiveConfig(config: ClusterClawConfig): void {
+  activeConfig = config;
 }
 
-export function isVerbose() {
-  return globalVerbose;
+// Verbose logging flag
+let verbose = false;
+
+export function isVerbose(): boolean {
+  return verbose;
 }
 
-export function shouldLogVerbose() {
-  return globalVerbose || isFileLogLevelEnabled("debug");
+export function setVerbose(value: boolean): void {
+  verbose = value;
 }
 
-export function logVerbose(message: string) {
-  if (!shouldLogVerbose()) {
-    return;
+export function logVerbose(...args: unknown[]): void {
+  if (verbose) {
+    console.log(...args);
   }
-  try {
-    getLogger().debug({ message }, "verbose");
-  } catch {
-    // ignore logger failures to avoid breaking verbose printing
-  }
-  if (!globalVerbose) {
-    return;
-  }
-  console.log(theme.muted(message));
 }
 
-export function logVerboseConsole(message: string) {
-  if (!globalVerbose) {
-    return;
-  }
-  console.log(theme.muted(message));
+// Yes flag for auto-confirmation
+let yes = false;
+
+export function isYes(): boolean {
+  return yes;
 }
 
-export function setYes(v: boolean) {
-  globalYes = v;
+export function setYes(value: boolean): void {
+  yes = value;
 }
-
-export function isYes() {
-  return globalYes;
-}
-
-export const success = theme.success;
-export const warn = theme.warn;
-export const info = theme.info;
-export const danger = theme.error;

@@ -1,5 +1,5 @@
 import { normalizeAccountId } from "./account-id.js";
-import { normalizeMessageChannel } from "./message-channel.js";
+import { isMessageChannel } from "./message-channel.js";
 
 export type DeliveryContext = {
   channel?: string;
@@ -22,8 +22,8 @@ export function normalizeDeliveryContext(context?: DeliveryContext): DeliveryCon
     return undefined;
   }
   const channel =
-    typeof context.channel === "string"
-      ? (normalizeMessageChannel(context.channel) ?? context.channel.trim())
+    typeof context.channel === "string" && isMessageChannel(context.channel)
+      ? context.channel.trim()
       : undefined;
   const to = typeof context.to === "string" ? context.to.trim() : undefined;
   const accountId = normalizeAccountId(context.accountId);
