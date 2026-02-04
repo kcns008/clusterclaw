@@ -1,4 +1,4 @@
-# ☸️ ClusterClaw 🔴 — Active Kubernetes & OpenShift SRE Agent
+# ☸️ ClusterClaw — Active Kubernetes & OpenShift SRE Agent
 
 <p align="center">
   <strong>Your AI-Powered Kubernetes & OpenShift Operations Expert</strong>

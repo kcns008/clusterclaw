@@ -5,7 +5,7 @@ read_when:
 title: "ClusterClaw"
 ---
 
-# ClusterClaw ☸️🔴
+# ClusterClaw ☸️
 
 > _"Pods are crashing? Let's fix that."_ — An SRE agent
 
