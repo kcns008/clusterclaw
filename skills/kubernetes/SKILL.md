@@ -27,6 +27,8 @@ Comprehensive skill for Kubernetes and OpenShift clusters covering operations, t
 | **EKS** | 1.31 | https://docs.aws.amazon.com/eks/ |
 | **AKS** | 1.31 | https://learn.microsoft.com/azure/aks/ |
 | **GKE** | 1.31 | https://cloud.google.com/kubernetes-engine/docs |
+| **ARO** | 4.17.x | https://learn.microsoft.com/azure/aro/ |
+| **ROSA** | 4.17.x | https://docs.openshift.com/rosa/ |
 
 ### Key Tools
 
@@ -88,6 +90,16 @@ oc adm upgrade --to=${VERSION}
 oc get clusterversion
 ```
 
+**ARO:**
+```bash
+az aro upgrade -g ${RG} -n ${CLUSTER} --kubernetes-version ${VERSION}
+```
+
+**ROSA:**
+```bash
+rosa upgrade cluster --cluster ${CLUSTER} --version ${VERSION}
+```
+
 ### Backup with Velero
 
 ```bash
@@ -100,6 +112,111 @@ velero backup create ${BACKUP_NAME} --include-namespaces ${NS}
 # Restore
 velero restore create --from-backup ${BACKUP_NAME}
 ```
+
+---
+
+## 1a. ARO (Azure Red Hat OpenShift) Operations
+
+### Cluster Lifecycle
+
+```bash
+# Create ARO cluster
+az aro create \
+  -g ${RG} \
+  -n ${CLUSTER} \
+  --vnet ${VNET} \
+  --master-subnet ${MASTER_SUBNET} \
+  --worker-subnet ${WORKER_SUBNET} \
+  --domain ${DOMAIN}
+
+# Get cluster credentials
+az aro show -g ${RG} -n ${CLUSTER} --query consoleProfile -o tsv
+
+# Delete cluster
+az aro delete -g ${RG} -n ${CLUSTER} --yes
+```
+
+### ARO-Specific Operations
+
+```bash
+# Scale node pools
+az aro nodepool scale -g ${RG} --cluster-name ${CLUSTER} -n nodepool1 --node-count ${COUNT}
+
+# Add node pool
+az aro nodepool add -g ${RG} --cluster-name ${CLUSTER} -n nodepool2 --vm-size Standard_D4s_v3 --node-count 3
+
+# Update/pull secrets
+az aro update -g ${RG} -n ${CLUSTER} --pull-secret @pull-secret.txt
+```
+
+### Azure Resources for ARO
+
+| Resource | Purpose |
+|----------|---------|
+| **Virtual Network** | VNet for cluster networking |
+| **Master Subnet** | Control plane nodes |
+| **Worker Subnet** | Worker nodes |
+| **Azure DNS Zone** | Custom domain resolution |
+| **Private Link** | Private cluster connectivity |
+| **Azure Key Vault** | Secrets management |
+
+---
+
+## 1b. ROSA (Red Hat OpenShift on AWS) Operations
+
+### Cluster Lifecycle
+
+```bash
+# Create ROSA cluster (interactive)
+rosa create cluster --cluster-name ${CLUSTER}
+
+# Create with custom configuration
+rosa create cluster \
+  --cluster-name ${CLUSTER} \
+  --region ${REGION} \
+  --version ${VERSION} \
+  --multi-az \
+  --compute-nodes 6
+
+# Get cluster credentials
+rosa show ${CLUSTER} --output json
+
+# Delete cluster
+rosa delete cluster --cluster ${CLUSTER} --yes
+```
+
+### ROSA-Specific Operations
+
+```bash
+# Scale node pools
+rosa edit nodegroup ${NODEPOOL} --cluster ${CLUSTER} --replicas ${COUNT}
+
+# Add node pool
+rosa create nodegroup \
+  --cluster ${CLUSTER} \
+  --name ${NODEPOOL} \
+  --instance-type m5.xlarge \
+  --replicas 3
+
+# Update pull secret
+rosa update pull-secret --cluster ${CLUSTER} --pull-secret @pull-secret.txt
+
+# Enable cluster admin
+rosa grant user admin --cluster ${CLUSTER} --user ${USER}
+```
+
+### AWS Resources for ROSA
+
+| Resource | Purpose |
+|----------|---------|
+| **VPC** | Cluster networking |
+| **Subnets** | Node placement |
+| **Route 53** | DNS management |
+| **S3 Bucket** | Rosa logs |
+| **IAM Roles** | Cluster/operator access |
+| **Security Groups** | Node communication |
+| **Private Link/Endpoints** | Private cluster access |
+| **Key Management Service** | Encryption keys |
 
 ---
 
