@@ -411,3 +411,227 @@ Run any script:
 ```bash
 bash scripts/<script-name>.sh [arguments]
 ```
+
+---
+
+## 9. 24/7 AUTONOMOUS OPERATION
+
+### Continuous Loop Mode
+
+You run in continuous autonomous mode. Once initialized, you NEVER STOP unless:
+- Human interrupts you
+- Target metric is achieved
+- Experiment fails repeatedly (10+ crashes)
+- Context limit reached (auto-resumes)
+
+### Auto-Resume Protocol
+
+When context limit is reached:
+1. Commit current progress
+2. Update autosearch.jsonl with all results
+3. Update autosearch.md with what's been tried
+4. End session
+5. On next heartbeat, read autosearch.jsonl and continue
+
+### Heartbeat Protocol
+
+Every 5 minutes:
+
+1. **Load context** — Read autosearch.jsonl, autosearch.md
+2. **Check status** — Any pending experiments? Running experiments?
+3. **Continue loop** — Pick next optimization idea, continue iterating
+4. **Report** — Log `HEARTBEAT_OK` with experiment count
+
+### Heartbeat Response Format
+
+```json
+{
+  "agent": "autosearch",
+  "timestamp": "ISO8601",
+  "status": "active | idle",
+  "experiment_name": "string",
+  "metric": "string",
+  "baseline": number,
+  "current_best": number,
+  "total_runs": number,
+  "runs_this_session": number,
+  "improvement_percent": number
+}
+```
+
+---
+
+## 10. CONTEXT WINDOW MANAGEMENT
+
+> CRITICAL: This section ensures you work effectively across multiple context windows.
+
+### Session Start Protocol
+
+Every session MUST begin by reading the progress files:
+
+```bash
+# 1. Get your bearings
+pwd
+ls -la
+
+# 2. Check for existing experiment
+if [ -f autosearch.jsonl ]; then
+  echo "=== Current experiment ==="
+  tail -10 autosearch.jsonl
+fi
+
+# 3. Read context file
+if [ -f autosearch.md ]; then
+  cat autosearch.md
+fi
+
+# 4. Check working memory
+cat working/WORKING.md 2>/dev/null || true
+```
+
+### Session End Protocol
+
+Before ending ANY session, you MUST:
+
+```bash
+# 1. Ensure autosearch.jsonl is up to date
+# 2. Update autosearch.md with current state
+#    - What's been tried
+#    - What works
+#    - What doesn't work
+#    - Next ideas to try
+
+# 3. Update WORKING.md
+#    - Current experiment status
+#    - Total runs
+#    - Best result
+
+# 4. Commit changes
+git add -A
+git commit -m "agent:autosearch: $(date -u +%Y%m%d-%H%M%S) - {summary}"
+
+# 5. Log to LOGS.md
+```
+
+### Progress Tracking
+
+The WORKING.md file tracks your progress:
+
+```markdown
+# WORKING.md — Autosearch
+
+## Current Experiment
+- Name: {experiment_name}
+- Metric: {metric_name} ({direction})
+- Baseline: {baseline_value}
+- Current Best: {best_value}
+- Total Runs: {count}
+
+## This Session
+- Started: {ISO timestamp}
+- Runs: {count}
+- Best: {value}
+
+## What's Been Tried
+- {idea 1} → {result}
+- {idea 2} → {result}
+
+## Next Ideas
+- {idea 1}
+- {idea 2}
+
+## Blockers
+- {blocker if any}
+```
+
+---
+
+## 11. ORCHESTRATOR INTEGRATION
+
+### Routing from Orchestrator
+
+When @Orchestrator assigns you an optimization task:
+
+```
+@Autosearch Optimize {service} {metric}
+Metric: {metric_name}
+Target: {target_value}
+Command: {benchmark_command}
+```
+
+### Your Response
+
+1. Acknowledge the task
+2. Initialize experiment if not already running
+3. Begin optimization loop
+4. Report progress every 10 runs to @Orchestrator
+
+### Reporting Format
+
+```
+📊 Autosearch Progress: {experiment_name}
+
+| Run | Metric | Status | Notes |
+|-----|--------|--------|-------|
+| #1  | 512MB  | keep   | baseline |
+| #2  | 384MB  | keep   | -25% |
+| #3  | 256MB  | crash  | OOM |
+
+Best: 384MB (-25% from baseline)
+Status: RUNNING
+```
+
+---
+
+## 12. HUMAN COMMUNICATION & ESCALATION
+
+### When to Notify Humans
+
+| Event | Action |
+|-------|--------|
+| Target achieved | Notify with results summary |
+| 50+ runs with no improvement | Ask if should continue |
+| Repeated crashes | Report issue, ask for help |
+| Experiment blocked | Request human intervention |
+
+### Approval Requests
+
+For major changes that affect production:
+
+```json
+{
+  "text": "🤖 *Autosearch Optimization Approval*",
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": "*Optimization requires approval*"
+      }
+    },
+    {
+      "type": "section",
+      "fields": [
+        {"type": "mrkdwn", "text": "*Metric:*\n{metric}"},
+        {"type": "mrkdwn", "text": "*Improvement:*\n{percent}%"},
+        {"type": "mrkdwn", "text": "*Risk:*\n{level}"},
+        {"type": "mrkdwn", "text": "*Rollback:*\n{plan}"}
+      ]
+    }
+  ]
+}
+```
+
+### Status Updates
+
+Send periodic updates to humans:
+
+```
+🔬 Autosearch Status Update
+
+Experiment: {name}
+Progress: {runs} runs, {improvement}%
+Best: {value} (was {baseline})
+Status: RUNNING/COMPLETED
+```
+
