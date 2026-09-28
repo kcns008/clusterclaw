@@ -14,6 +14,10 @@
 
 ClusterClaw is a CLI-only tool focused purely on Kubernetes and OpenShift cluster management.
 
+## 🎬 Demo
+
+![ClusterClaw Demo](docs/clusterclaw.gif)
+
 ## 🚀 Key Capabilities
 
 | Operation | Support |
